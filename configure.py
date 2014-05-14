@@ -64,7 +64,7 @@ buttons_to_update = controller['controls']
     JOYBUTTONUP = joy, button
     JOYHATMOTION = joy, hat, value
 '''
-events_to_capture = [JOYBUTTONUP, JOYHATMOTION]
+events_to_capture = [JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
 
 mapping = {}
 running = True
@@ -74,12 +74,17 @@ while running:
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        
+        print event
         if event.type in events_to_capture:
             if event.type == JOYBUTTONUP:
                 mapping[buttons_to_update[current_button]] = (event.type, event.button)
             elif event.type == JOYHATMOTION:
                 mapping[buttons_to_update[current_button]] = (event.type, event.value)
+            #  TODO make better
+            elif event.type == JOYAXISMOTION:
+                if event.value < 1.0 and event.value > -1.0:
+                    continue
+                mapping[buttons_to_update[current_button]] = (event.type, (event.value, event.axis))
             #  Advance to next button
             current_button += 1
             if current_button >= len(buttons_to_update):
