@@ -7,11 +7,17 @@ from pygame.locals import *
 pygame.init()
 pygame.font.init()
 pygame.joystick.init()
-stick = pygame.joystick.Joystick(0)
-stick.init()
+
+#  Try to initialize the first joystick
+try:
+    stick = pygame.joystick.Joystick(0)
+    stick.init()
+except:
+    pass
 #  What controller are we configuring?
 selected_controller = 0
 controllers_available = os.listdir('controllers')
+
 #  Read in controller data
 input_path = "controllers/"+controllers_available[selected_controller]
 input_text = open(input_path + "/info.json").read()
@@ -25,7 +31,8 @@ center_y = windowSurface.get_rect().centery
 
 #  Load controller image
 controllerImage = pygame.image.load(input_path + '/'+controller['image']).convert()
-#  Setup where everything will be drawn
+
+#  Setup where controller image will be drawn
 controllerImageRect = controllerImage.get_rect()
 controllerImageRect.centerx = center_x
 controllerImageRect.centery = center_y
@@ -61,30 +68,38 @@ def render():
 current_button = 0
 buttons_to_update = controller['controls']
 '''
+    KEYUP = scancode, key, mod
     JOYBUTTONUP = joy, button
     JOYHATMOTION = joy, hat, value
 '''
-events_to_capture = [JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
+events_to_capture = [KEYUP, JOYBUTTONUP, JOYHATMOTION, JOYAXISMOTION]
 
 mapping = {}
 running = True
 render()
+
 while running:
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        print event
+        
         if event.type in events_to_capture:
-            if event.type == JOYBUTTONUP:
-                mapping[buttons_to_update[current_button]] = (event.type, event.button)
+            if event.type == KEYUP:
+                mapping[buttons_to_update[current_button]] = {"type":event.type, "key":event.key, "mod": event.mod}
+            
+            elif event.type == JOYBUTTONUP:
+                mapping[buttons_to_update[current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
+            
             elif event.type == JOYHATMOTION:
-                mapping[buttons_to_update[current_button]] = (event.type, event.value)
-            #  TODO make better
+                mapping[buttons_to_update[current_button]] = {"type": event.type, "value": event.value, "joy": event.joy}
+            
             elif event.type == JOYAXISMOTION:
+                #  Skip if the press wasn't 'hard' enough
                 if event.value < 1.0 and event.value > -1.0:
                     continue
-                mapping[buttons_to_update[current_button]] = (event.type, (event.value, event.axis))
+                mapping[buttons_to_update[current_button]] = {"type": event.type, "value": event.value, "axis": event.axis, "joy": event.joy}
+            
             #  Advance to next button
             current_button += 1
             if current_button >= len(buttons_to_update):
@@ -92,5 +107,6 @@ while running:
                 running = False
             else:
                 render()
+
 #  Output our mapping
 print json.dumps(mapping)
