@@ -92,6 +92,9 @@ while running:
                 mapping[buttons_to_update[current_button]] = {"type":event.type, "button":event.button, "joy": event.joy}
             
             elif event.type == JOYHATMOTION:
+                #  Skip the event of the joystick reseting to 0, 0
+                if event.value == (0,0):
+                    continue
                 mapping[buttons_to_update[current_button]] = {"type": event.type, "value": event.value, "joy": event.joy}
             
             elif event.type == JOYAXISMOTION:
