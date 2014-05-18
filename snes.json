@@ -1,0 +1,62 @@
+{
+    "A": {
+        "type": 3,
+        "key": 102,
+        "mod": 4096
+    },
+    "B": {
+        "type": 3,
+        "key": 116,
+        "mod": 4096
+    },
+    "Right Bumper": {
+        "type": 3,
+        "key": 103,
+        "mod": 4096
+    },
+    "UP": {
+        "type": 3,
+        "key": 102,
+        "mod": 4096
+    },
+    "DOWN": {
+        "type": 3,
+        "key": 102,
+        "mod": 4096
+    },
+    "START": {
+        "type": 3,
+        "key": 103,
+        "mod": 4096
+    },
+    "RIGHT": {
+        "type": 3,
+        "key": 103,
+        "mod": 4096
+    },
+    "Y": {
+        "type": 3,
+        "key": 102,
+        "mod": 4096
+    },
+    "X": {
+        "type": 3,
+        "key": 104,
+        "mod": 4096
+    },
+    "Left Bumper": {
+        "type": 3,
+        "key": 104,
+        "mod": 4096
+    },
+    "SELECT": {
+        "type": 3,
+        "key": 103,
+        "mod": 4096
+    },
+    "LEFT": {
+        "type": 3,
+        "key": 103,
+        "mod": 4096
+    }
+}

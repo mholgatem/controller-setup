@@ -19,7 +19,7 @@ selected_controller = 0
 controllers_available = os.listdir('controllers')
 
 #  Read in controller data
-input_path = "controllers/"+controllers_available[selected_controller]
+input_path = "controllers/" + controllers_available[selected_controller]
 input_text = open(input_path + "/info.json").read()
 controller = json.loads(input_text)
 
@@ -112,4 +112,5 @@ while running:
                 render()
 
 #  Output our mapping
-print json.dumps(mapping)
+with open(controller['name'] + ".json", "w") as output_file:
+    output_file.write(json.dumps(mapping, indent=4, separators=(',', ': ')))
