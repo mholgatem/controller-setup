@@ -14,8 +14,12 @@ controller_mapping = json.loads(input_file_data)
 def convert_event(event, default, joystick=False):
     if event["type"] == 3 and not joystick:
             return event["key"]
+    elif event["type"] == 11:
+        return event["button"]
+    elif event["type"] == 7:
+        return event["axis"]
     else:
-        print "Encountered unknown event type %d. Using default." % event.type
+        print "Encountered unknown event type %d. Using default." % event["type"]
     return default
 
 output_file_data = """
@@ -47,10 +51,6 @@ L_1=%d
 R_1=%d
 START_1=%d
 SELECT_1=%d
-LEFT_1=%d
-RIGHT_1=%d
-UP_1=%d
-DOWN_1=%d
 QUIT=99
 ACCEL=7
 QLOAD=10
@@ -84,9 +84,7 @@ InterpolatedSound=0
  convert_event(controller_mapping['DOWN'], 274), #Now for joystick events
  convert_event(controller_mapping['A'], 3, True), convert_event(controller_mapping['B'], 2, True),
  convert_event(controller_mapping['X'], 1, True), convert_event(controller_mapping['Y'], 0, True), convert_event(controller_mapping['Left Bumper'], 4, True),
- convert_event(controller_mapping['Right Bumper'], 6, True), convert_event(controller_mapping['START'], 9, True), convert_event(controller_mapping['SELECT'], 8, True),
- convert_event(controller_mapping['LEFT'], 276, True), convert_event(controller_mapping['RIGHT'], 275, True), convert_event(controller_mapping['UP'], 273, True),
- convert_event(controller_mapping['DOWN'], 274, True))
+ convert_event(controller_mapping['Right Bumper'], 6, True), convert_event(controller_mapping['START'], 9, True), convert_event(controller_mapping['SELECT'], 8, True), controller_mapping['LEFT']["axis"], controller_mapping['UP']["axis"])
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)
