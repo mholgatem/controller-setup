@@ -1,66 +1,62 @@
 {
     "A": {
-        "joy": 0,
-        "button": 1,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "B": {
-        "joy": 0,
-        "button": 2,
-        "type": 11
+        "type": 3,
+        "key": 306,
+        "mod": 0
     },
     "Right Bumper": {
-        "joy": 0,
-        "button": 7,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "UP": {
-        "joy": 0,
-        "type": 7,
-        "value": -1.000030518509476,
-        "axis": 1
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "DOWN": {
-        "joy": 0,
-        "type": 7,
-        "value": 1.0,
-        "axis": 1
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "START": {
-        "joy": 0,
-        "button": 9,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "RIGHT": {
-        "joy": 0,
-        "type": 7,
-        "value": 1.0,
-        "axis": 0
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "Y": {
-        "joy": 0,
-        "button": 3,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "X": {
-        "joy": 0,
-        "button": 0,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "Left Bumper": {
-        "joy": 0,
-        "button": 6,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "SELECT": {
-        "joy": 0,
-        "button": 8,
-        "type": 11
+        "type": 3,
+        "key": 99,
+        "mod": 64
     },
     "LEFT": {
-        "joy": 0,
-        "type": 7,
-        "value": -1.000030518509476,
-        "axis": 0
+        "type": 3,
+        "key": 99,
+        "mod": 64
     }
 }
