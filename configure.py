@@ -15,7 +15,7 @@ try:
 except:
     pass
 #  What controller are we configuring?
-selected_controller = 0
+selected_controller = 1
 controllers_available = os.listdir('controllers')
 
 #  Read in controller data
@@ -24,7 +24,23 @@ input_text = open(input_path + "/info.json").read()
 controller = json.loads(input_text)
 
 #  Initialize screen
-windowSurface = pygame.display.set_mode((0,0), 0, 32)
+pygame.display.init()
+dinfo = pygame.display.Info()
+fullscreen = False
+
+flag = 0
+if fullscreen:
+	flag = pygame.FULLSCREEN
+
+if (pygame.display.mode_ok((dinfo.current_w,dinfo.current_h),pygame.FULLSCREEN)):
+	windowSurface = pygame.display.set_mode((dinfo.current_w, dinfo.current_h), flag)
+else:
+	pygame.quit()
+	sys.exit()
+
+
+
+#windowSurface = pygame.display.set_mode((0,0), 0, 32)
 
 center_x = windowSurface.get_rect().centerx
 center_y = windowSurface.get_rect().centery
