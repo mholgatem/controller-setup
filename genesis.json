@@ -1,17 +1,17 @@
 {
     "A": {
         "joy": 0,
-        "button": 6,
+        "button": 1,
         "type": 11
     },
     "C": {
         "joy": 0,
-        "button": 4,
+        "button": 2,
         "type": 11
     },
     "B": {
         "joy": 0,
-        "button": 7,
+        "button": 2,
         "type": 11
     },
     "UP": {
@@ -28,7 +28,7 @@
     },
     "START": {
         "joy": 0,
-        "button": 1,
+        "button": 9,
         "type": 11
     },
     "RIGHT": {
@@ -39,22 +39,22 @@
     },
     "MODE": {
         "joy": 0,
-        "button": 2,
+        "button": 8,
         "type": 11
     },
     "Y": {
         "joy": 0,
-        "button": 0,
+        "button": 3,
         "type": 11
     },
     "X": {
         "joy": 0,
-        "button": 5,
+        "button": 0,
         "type": 11
     },
     "Z": {
         "joy": 0,
-        "button": 3,
+        "button": 0,
         "type": 11
     },
     "LEFT": {

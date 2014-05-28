@@ -15,7 +15,7 @@ try:
 except:
     pass
 #  What controller are we configuring?
-selected_controller = 0
+selected_controller = 1
 controllers_available = os.listdir('controllers')
 
 #  Read in controller data
