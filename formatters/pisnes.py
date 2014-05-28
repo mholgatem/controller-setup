@@ -11,15 +11,18 @@ input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
 
 #  Converts our mapping into a emulator specific value
-def convert_event(event, default, joystick=False):
+def convert_event(event, default, joystick):
+    '''
+        event = event data
+        default = value to default to if joystick doesn't match
+        joystick = True if looking for a joystick value
+    '''
     if event["type"] == 3 and not joystick:
             return event["key"]
-    elif event["type"] == 11:
+    elif event["type"] == 11 and joystick:
         return event["button"]
-    elif event["type"] == 7:
+    elif event["type"] == 7 and joystick:
         return event["axis"]
-    else:
-        print "Encountered unknown event type %d. Using default." % event["type"]
     return default
 try:
     output_file_data = """
@@ -77,18 +80,18 @@ try:
     # 0, 8192, 11025, 16000, 22050, 29300, 32000, 44100
     SoundPlaybackRate=7
     InterpolatedSound=0
-    """ % (convert_event(controller_mapping['A'], 100),
-    convert_event(controller_mapping['B'], 99),
-    convert_event(controller_mapping['X'], 115),
-    convert_event(controller_mapping['Y'], 120),
-    convert_event(controller_mapping['Left Bumper'], 97),
-    convert_event(controller_mapping['Right Bumper'], 102),
-    convert_event(controller_mapping['START'], 13),
-    convert_event(controller_mapping['SELECT'], 9),
-    convert_event(controller_mapping['LEFT'], 276),
-    convert_event(controller_mapping['RIGHT'], 275),
-    convert_event(controller_mapping['UP'], 273),
-    convert_event(controller_mapping['DOWN'], 274),
+    """ % (convert_event(controller_mapping['A'], 100, False),
+    convert_event(controller_mapping['B'], 99, False),
+    convert_event(controller_mapping['X'], 115, False),
+    convert_event(controller_mapping['Y'], 120, False),
+    convert_event(controller_mapping['Left Bumper'], 97, False),
+    convert_event(controller_mapping['Right Bumper'], 102, False),
+    convert_event(controller_mapping['START'], 13, False),
+    convert_event(controller_mapping['SELECT'], 9, False),
+    convert_event(controller_mapping['LEFT'], 276, False),
+    convert_event(controller_mapping['RIGHT'], 275, False),
+    convert_event(controller_mapping['UP'], 273, False),
+    convert_event(controller_mapping['DOWN'], 274, False),
     #Now for joystick events
     convert_event(controller_mapping['A'], 3, True),
     convert_event(controller_mapping['B'], 2, True),
