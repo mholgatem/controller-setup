@@ -1,5 +1,7 @@
 import json
 import sys
+import pygame
+
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"
@@ -13,20 +15,14 @@ controller_mapping = json.loads(input_file_data)
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default, joystick):
     if event["type"] == 3 and not joystick:
-        return event["key"]
-    elif event["type"] == 11:
-        return event["button"]
-    elif event["type"] == 7:
-        if event["value"] > 0:
-            return str(event["axis"]) + "-max"
-        else:
-            return str(event["axis"]) + "-min"
-    else:
-        print "Encountered unknown event type %d. Using default." % event["type"]
+        return pygame.key.name(int(event["key"]))
     return default
 
 #  Dgen does things backwards... so we convert all joystick input into backwards way here
 joystick_lines = ["\tjoypad1_b%d = %s" % (event["button"], identifer) for identifer, event in controller_mapping.iteritems() if event["type"]==11] 
+
+#  we need this to get the text name of keys...
+pygame.init()
 
 try:
     output_file_data = """
@@ -44,18 +40,18 @@ try:
     # dgenrc(5) manpage.
 
     # These are the controls for pad 1
-    key_pad1_up = up
-    key_pad1_down = down
-    key_pad1_left = left
-    key_pad1_right = right
-    key_pad1_a = a
-    key_pad1_b = s
-    key_pad1_c = d
-    key_pad1_x = q
-    key_pad1_y = w
-    key_pad1_z = e
-    key_pad1_mode = backspace
-    key_pad1_start = return
+    key_pad1_up = %s
+    key_pad1_down = %s
+    key_pad1_left = %s
+    key_pad1_right = %s
+    key_pad1_a = %s
+    key_pad1_b = %s
+    key_pad1_c = %s
+    key_pad1_x = %s
+    key_pad1_y = %s
+    key_pad1_z = %s
+    key_pad1_mode = %s
+    key_pad1_start = %s
 
     # The same for pad 2
     # Yes, I KNOW the default player 2 keys are awful. Pick your own!
@@ -179,7 +175,19 @@ try:
     # lines if you don't compile joystick support in. [PKH]
 
     # Joypad 1
-"""+ "\n".join(joystick_lines)+"""
+"""%(convert_event(controller_mapping['UP'], 'up', False),
+        convert_event(controller_mapping['DOWN'], 'down', False),
+        convert_event(controller_mapping['LEFT'], 'left', False),
+        convert_event(controller_mapping['RIGHT'], 'right', False),
+        convert_event(controller_mapping['A'], 'a', False),
+        convert_event(controller_mapping['B'], 's', False),
+        convert_event(controller_mapping['C'], 'd', False),
+        convert_event(controller_mapping['X'], 'q', False),
+        convert_event(controller_mapping['Y'], 'w', False),
+        convert_event(controller_mapping['Z'], 'e', False),
+        convert_event(controller_mapping['MODE'], 'backspace', False),
+        convert_event(controller_mapping['START'], 'return', False),
+        )+ "\n".join(joystick_lines)+"""
     # Joypad 2
     #joypad2_b0 = A
     #joypad2_b1 = C
