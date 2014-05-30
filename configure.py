@@ -19,7 +19,7 @@ except:
 controllers_available = os.listdir('controllers')
 
 if len(sys.argv) > 1:
-    controllers = sys.arg[1:]
+    controllers = sys.argv[1:]
 else:
     controllers = controllers_available
 
