@@ -3,6 +3,7 @@ import sys
 import os
 import pygame
 from pygame.locals import *
+import subprocess
 
 pygame.init()
 pygame.font.init()
@@ -14,6 +15,9 @@ try:
     stick.init()
 except:
     pass
+
+#  Formatters available 
+formatters_available = filter(lambda x: x[-3:]==".py", os.listdir('formatters'))
 
 #  What controller are we configuring?
 controllers_available = os.listdir('controllers')
@@ -141,3 +145,16 @@ for selected_controller in controllers:
     #  Output our mapping
     with open(controller['name'] + ".json", "w") as output_file:
         output_file.write(json.dumps(mapping, indent=4, separators=(',', ': ')))
+
+    output_directory = None
+    if "output directory" in controller:
+        output_directory = controller['output directory']
+    else:
+        output_directory = "output/"+controller['name']
+
+    #  Call Formatters
+    for formatter in formatters_available:
+        try:
+            subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory+"/"+formatter[:-3]])
+        except:
+            print formatter + " has failed."
