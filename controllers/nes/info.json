@@ -1,1 +1,1 @@
-{"image": "nes_controller.png", "name": "nes", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"]}
+{"image": "nes_controller.png", "name": "nes", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"], "formatters": ["nes.py"]}

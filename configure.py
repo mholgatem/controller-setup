@@ -151,10 +151,10 @@ for selected_controller in controllers:
         output_directory = controller['output directory']
     else:
         output_directory = "output/"+controller['name']
-
     #  Call Formatters
-    for formatter in formatters_available:
-        try:
-            subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory+"/"+formatter[:-3]])
-        except:
-            print formatter + " has failed."
+    if "formatters" in controller:
+        for formatter in controller['formatters']:
+            try:
+                subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory+"/"+formatter[:-3]])
+            except:
+                print formatter + " has failed."
