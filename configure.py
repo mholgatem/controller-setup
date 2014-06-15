@@ -146,15 +146,23 @@ for selected_controller in controllers:
     with open(controller['name'] + ".json", "w") as output_file:
         output_file.write(json.dumps(mapping, indent=4, separators=(',', ': ')))
 
-    output_directory = None
-    if "output directory" in controller:
-        output_directory = controller['output directory']
+    output_directory = []
+    if "output_directory" in controller:
+        for od in controller['output_directory']:
+            output_directory.append(od)
     else:
-        output_directory = "output/"+controller['name']
+        output_directory = "output/"+controller['name'] +"/"+formatter[:-3]
+
+    print output_directory
+    count = 0
     #  Call Formatters
     if "formatters" in controller:
         for formatter in controller['formatters']:
+            print formatter
+            print sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count]
             try:
-                subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory+"/"+formatter[:-3]])
-            except:
+                subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count] ])
+            except Exception as e:
+                print e.message, e.args
                 print formatter + " has failed."
+            count += 1
