@@ -5,6 +5,7 @@ import pygame
 from pygame.locals import *
 import subprocess
 
+
 pygame.init()
 pygame.font.init()
 pygame.joystick.init()
@@ -153,15 +154,17 @@ for selected_controller in controllers:
     else:
         output_directory = "output/"+controller['name'] +"/"+formatter[:-3]
 
-    print output_directory
+    #print output_directory
     count = 0
     #  Call Formatters
     if "formatters" in controller:
         for formatter in controller['formatters']:
             print formatter
-            print sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count]
-            try:
-                subprocess.call([sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count] ])
+            #print sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count]
+            print output_directory[count]
+	    try:
+                pid = os.system('python ' +  "formatters/"+formatter + " " + controller['name'] + ".json " + output_directory[count] )
+                #print pid
             except Exception as e:
                 print e.message, e.args
                 print formatter + " has failed."
