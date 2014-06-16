@@ -10,6 +10,8 @@ pygame.init()
 pygame.font.init()
 pygame.joystick.init()
 
+DIRECTORY = "/home/pi/pimame/controller-setup/"
+
 #  Try to initialize the first joystick
 try:
     stick = pygame.joystick.Joystick(0)
@@ -18,10 +20,10 @@ except:
     pass
 
 #  Formatters available 
-formatters_available = filter(lambda x: x[-3:]==".py", os.listdir('formatters'))
+formatters_available = filter(lambda x: x[-3:]==".py", os.listdir(DIRECTORY + 'formatters'))
 
 #  What controller are we configuring?
-controllers_available = os.listdir('controllers')
+controllers_available = os.listdir(DIRECTORY +'controllers')
 
 if len(sys.argv) > 1:
     controllers = sys.argv[1:]
@@ -81,7 +83,7 @@ def render():
 
 for selected_controller in controllers:
     #  Read in controller data
-    input_path = "controllers/" + selected_controller
+    input_path = DIRECTORY + "controllers/" + selected_controller
     try:
         input_text = open(input_path + "/info.json").read()
     except:
@@ -163,7 +165,7 @@ for selected_controller in controllers:
             #print sys.executable, "formatters/"+formatter, controller['name'] + ".json ", output_directory[count]
             print output_directory[count]
 	    try:
-                pid = os.system('python ' +  "formatters/"+formatter + " " + controller['name'] + ".json " + output_directory[count] )
+                pid = os.system('python ' + DIRECTORY +  "formatters/"+formatter + " " + controller['name'] + ".json " + output_directory[count] )
                 #print pid
             except Exception as e:
                 print e.message, e.args
