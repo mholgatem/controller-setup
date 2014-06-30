@@ -57,6 +57,105 @@ center_y = windowSurface.get_rect().centery
 font_size = 24
 font = pygame.font.SysFont(None, font_size)
 
+'''
+    Which controller Selection Section
+'''
+picking_controller = True
+selected_index = 0
+
+controller_options = ["All"] + controllers_available
+num_options = len(controller_options)
+
+def render_menu():
+    windowSurface.fill((0, 0, 0))
+
+    for i in range(min(num_options, 10)):
+        if selected_index == i:
+            text = font.render(controller_options[i], True, (0, 255, 0), (0, 0, 0))
+        else:
+            text = font.render(controller_options[i], True, (255, 255, 255), (0, 0, 0))
+        
+        textRect = text.get_rect()
+        textRect.centerx = center_x
+        textRect.centery = i * font_size + 20
+        
+        windowSurface.blit(text, textRect)
+
+    pygame.display.update()
+
+render_menu()
+while picking_controller:
+    for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            
+            if event.type == KEYUP:
+                #  Up Arrow or W
+                if event.key == 273 or event.key == 119:
+                    if selected_index > 0:
+                        selected_index -= 1
+                    #  Wrap around
+                    else:
+                        selected_index = num_options - 1
+                    render_menu()
+                elif event.key == 274 or event.key == 115:
+                    if selected_index < num_options-1:
+                        selected_index += 1
+                    #  Wrap Around
+                    else:
+                        selected_index = 0
+                    render_menu()
+                #  Enter Key
+                elif event.key == 13:
+                    picking_controller = False
+            elif event.type == JOYBUTTONUP:
+                if event.button == 1:
+                    picking_controller = False
+            
+            elif event.type == JOYHATMOTION:
+                if event.value[1] == 1:
+                    if selected_index > 0:
+                        selected_index -= 1
+                    #  Wrap around
+                    else:
+                        selected_index = num_options - 1
+                    render_menu()
+                elif event.value[1] == -1:
+                    if selected_index < num_options-1:
+                        selected_index += 1
+                    #  Wrap Around
+                    else:
+                        selected_index = 0
+                    render_menu()
+            elif event.type == JOYAXISMOTION:
+                #  ignore really small presses
+                if abs(event.value) < 0.1:
+                    continue
+                if event.axis == 1:
+                    if event.value < 0:
+                        if selected_index > 0:
+                            selected_index -= 1
+                        #  Wrap around
+                        else:
+                            selected_index = num_options - 1
+                        render_menu()
+                    elif event.value > 0:
+                        if selected_index < num_options - 1:
+                            selected_index += 1
+                        #  Wrap Around
+                        else:
+                            selected_index = 0
+                        render_menu()
+
+if selected_index == 0:
+    controllers = controllers_available
+else:
+    controllers = [controller_options[selected_index]]                 
+
+'''
+    Controller confguration section
+'''
 def render():  
     windowSurface.fill((0, 0, 0))
     
