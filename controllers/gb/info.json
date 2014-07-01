@@ -1,2 +1,2 @@
-{"image": "gb_controller.png", "name": "gb", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"], "formatters": ["gb.py"], "output_directory": ["/home/pi/gb.cfg"]}
+{"image": "gb_controller.png", "name": "gb", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"], "formatters": ["gb.py"], "output_directory": ["/home/pi/.mednafen/gb.cfg"]}
 

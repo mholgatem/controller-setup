@@ -1,1 +1,1 @@
-{"image": "nes_controller.png", "name": "nes", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"], "formatters": ["nes.py"], "output_directory": ["/home/pi/nes.cfg"]}
+{"image": "nes_controller.png", "name": "nes", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "START", "SELECT"], "formatters": ["nes.py"], "output_directory": ["/home/pi/.fceux/fceux.cfg"]}
