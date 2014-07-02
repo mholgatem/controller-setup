@@ -50,10 +50,11 @@ else:
 
 
 #windowSurface = pygame.display.set_mode((0,0), 0, 32)
-
-center_x = windowSurface.get_rect().centerx
-center_y = windowSurface.get_rect().centery
-
+window_rect = windowSurface.get_rect()
+center_x = window_rect.centerx
+center_y = window_rect.centery
+window_width = window_rect.width
+window_height = window_rect.height
 
 #  Setup font
 font_size = 24
@@ -67,23 +68,78 @@ selected_index = 0
 
 controller_options = ["All"] + controllers_available
 num_options = len(controller_options)
+vertical_margin = font_size
+
+available_menu_items_per_page = (window_height - vertical_margin * 2) / font_size
+
+page_index_offset = 0
 
 def render_menu():
     windowSurface.fill((0, 0, 0))
+    #  Draw previous if needed
+    if page_index_offset > 0:
+        text = font.render("Previous", True, (0, 0, 255), (0, 0, 0))
+        textRect = text.get_rect()
+        textRect.centerx = center_x
+        textRect.y = 0 
+        
+        windowSurface.blit(text, textRect)
+    #  Draw Next if needed
+    if page_index_offset + available_menu_items_per_page < num_options:
+        text = font.render("Next", True, (0, 0, 255), (0, 0, 0))
+        textRect = text.get_rect()
+        textRect.centerx = center_x
+        textRect.y = window_height - font_size
 
-    for i in range(min(num_options, 10)):
+        windowSurface.blit(text, textRect)
+    for i in range(min(num_options, available_menu_items_per_page, num_options-page_index_offset)):
+        menu_index = i + page_index_offset
+
         if selected_index == i:
-            text = font.render(controller_options[i], True, (0, 255, 0), (0, 0, 0))
+            text = font.render(controller_options[menu_index], True, (0, 255, 0), (0, 0, 0))
         else:
-            text = font.render(controller_options[i], True, (255, 255, 255), (0, 0, 0))
+            text = font.render(controller_options[menu_index], True, (255, 255, 255), (0, 0, 0))
         
         textRect = text.get_rect()
         textRect.centerx = center_x
-        textRect.centery = i * font_size + 20
+        textRect.y = i * font_size + vertical_margin
         
         windowSurface.blit(text, textRect)
 
     pygame.display.update()
+
+#  Moving up on menu
+def menu_up():
+    global selected_index
+    global page_index_offset
+    
+    if selected_index > 0:
+        selected_index -= 1
+    #  Wrap around
+    else:
+        if page_index_offset > 0:
+            page_index_offset -= available_menu_items_per_page
+        selected_index = available_menu_items_per_page - 1
+    render_menu()
+
+#  Moving down on menu
+def menu_down():
+    global selected_index
+    global page_index_offset
+    
+    # how many items on this page?
+    items_left = available_menu_items_per_page
+    if available_menu_items_per_page > num_options - page_index_offset:
+        items_left = num_options - page_index_offset
+    
+    if selected_index < items_left - 1:
+        selected_index += 1
+    #  Wrap Around or go to the next page
+    else:
+        if selected_index + page_index_offset  < num_options - 1:
+            page_index_offset += available_menu_items_per_page
+        selected_index = 0
+    render_menu()
 
 render_menu()
 while picking_controller:
@@ -95,19 +151,9 @@ while picking_controller:
             if event.type == KEYUP:
                 #  Up Arrow or W
                 if event.key == 273 or event.key == 119:
-                    if selected_index > 0:
-                        selected_index -= 1
-                    #  Wrap around
-                    else:
-                        selected_index = num_options - 1
-                    render_menu()
+                    menu_up()
                 elif event.key == 274 or event.key == 115:
-                    if selected_index < num_options-1:
-                        selected_index += 1
-                    #  Wrap Around
-                    else:
-                        selected_index = 0
-                    render_menu()
+                    menu_down()
                 #  Enter Key
                 elif event.key == 13:
                     picking_controller = False
@@ -117,44 +163,23 @@ while picking_controller:
             
             elif event.type == JOYHATMOTION:
                 if event.value[1] == 1:
-                    if selected_index > 0:
-                        selected_index -= 1
-                    #  Wrap around
-                    else:
-                        selected_index = num_options - 1
-                    render_menu()
+                    menu_up()
                 elif event.value[1] == -1:
-                    if selected_index < num_options-1:
-                        selected_index += 1
-                    #  Wrap Around
-                    else:
-                        selected_index = 0
-                    render_menu()
+                    menu_down()
             elif event.type == JOYAXISMOTION:
                 #  ignore really small presses
                 if abs(event.value) < 0.1:
                     continue
                 if event.axis == 1:
                     if event.value < 0:
-                        if selected_index > 0:
-                            selected_index -= 1
-                        #  Wrap around
-                        else:
-                            selected_index = num_options - 1
-                        render_menu()
+                        menu_up()
                     elif event.value > 0:
-                        if selected_index < num_options - 1:
-                            selected_index += 1
-                        #  Wrap Around
-                        else:
-                            selected_index = 0
-                        render_menu()
+                        menu_down()
 
 if selected_index == 0:
     controllers = controllers_available
 else:
     controllers = [controller_options[selected_index]]                 
-
 '''
     Controller confguration section
 '''
