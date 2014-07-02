@@ -57,7 +57,7 @@ window_width = window_rect.width
 window_height = window_rect.height
 
 #  Setup font
-font_size = 24
+font_size = 124
 font = pygame.font.SysFont(None, font_size)
 
 '''
@@ -176,10 +176,10 @@ while picking_controller:
                     elif event.value > 0:
                         menu_down()
 
-if selected_index == 0:
+if selected_index + page_index_offset == 0:
     controllers = controllers_available
 else:
-    controllers = [controller_options[selected_index]]                 
+    controllers = [controller_options[selected_index + page_index_offset]]     
 '''
     Controller confguration section
 '''
