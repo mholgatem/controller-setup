@@ -57,7 +57,7 @@ window_width = window_rect.width
 window_height = window_rect.height
 
 #  Setup font
-font_size = 124
+font_size = 24
 font = pygame.font.SysFont(None, font_size)
 
 '''
