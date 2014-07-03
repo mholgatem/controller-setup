@@ -112,14 +112,14 @@ def render_menu():
 def menu_up():
     global selected_index
     global page_index_offset
-    
     if selected_index > 0:
         selected_index -= 1
     #  Wrap around
     else:
         if page_index_offset > 0:
             page_index_offset -= available_menu_items_per_page
-        selected_index = available_menu_items_per_page - 1
+        selected_index = min(available_menu_items_per_page, num_options) - 1
+
     render_menu()
 
 #  Moving down on menu
