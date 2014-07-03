@@ -1,0 +1,2 @@
+{"image": "ngpc_controller.png", "name": "ngpc", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "OPTION"], "formatters": ["ngpc.py"], "output_directory": ["/home/pi/.mednafen/ngpc.cfg"]}
+

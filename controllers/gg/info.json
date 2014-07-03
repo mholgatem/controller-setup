@@ -1,0 +1,2 @@
+{"image": "gg_controller.png", "name": "gg", "controls": ["1", "2", "START",  "LEFT", "UP", "RIGHT", "DOWN"], "formatters": ["gg.py"], "output_directory": ["/home/pi/.mednafen/gg.cfg"]}
+

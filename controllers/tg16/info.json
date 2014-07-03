@@ -1,0 +1,2 @@
+{"image": "tg16_controller.png", "name": "tg16", "controls": ["I", "II", "RUN", "SELECT",  "LEFT", "UP", "RIGHT", "DOWN"], "formatters": ["tg16.py"], "output_directory": ["/home/pi/.mednafen/pce_fast.cfg"]}
+

@@ -1,0 +1,2 @@
+{"image": "sms_controller.png", "name": "sms", "controls": ["1", "2", "PAUSE",  "LEFT", "UP", "RIGHT", "DOWN"], "formatters": ["sms.py"], "output_directory": ["/home/pi/.mednafen/sms.cfg"]}
+
