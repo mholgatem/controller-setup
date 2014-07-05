@@ -101,8 +101,8 @@ try:
     convert_event(controller_mapping['Right Bumper'], 6, True),
     convert_event(controller_mapping['START'], 9, True),
     convert_event(controller_mapping['SELECT'], 8, True),
-    controller_mapping['LEFT']["axis"],
-    controller_mapping['UP']["axis"])
+     convert_event(controller_mapping['LEFT'], 0, True), 
+     convert_event(controller_mapping['UP'], 1, True) )
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()

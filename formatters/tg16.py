@@ -61,28 +61,31 @@ try:
     output_file_data = """
 
 ;pce_fast, Port 1, Gamepad: I
-pce_fast.input.port1.gamepad.i keyboard 97
+pce_fast.input.port1.gamepad.i %s
 
 ;pce_fast, Port 1, Gamepad: II
-pce_fast.input.port1.gamepad.ii keyboard 115
+pce_fast.input.port1.gamepad.ii %s
 
 ;pce_fast, Port 1, Gamepad: RUN
-pce_fast.input.port1.gamepad.run keyboard 271
+pce_fast.input.port1.gamepad.run %s
 
 ;pce_fast, Port 1, Gamepad: SELECT
-pce_fast.input.port1.gamepad.select keyboard 270
+pce_fast.input.port1.gamepad.select %s
 
 ;pce_fast, Port 1, Gamepad: DOWN
-pce_fast.input.port1.gamepad.down keyboard  
+pce_fast.input.port1.gamepad.down %s  
 
 ;pce_fast, Port 1, Gamepad: LEFT
-pce_fast.input.port1.gamepad.left keyboard 276
+pce_fast.input.port1.gamepad.left %s
 
 ;pce_fast, Port 1, Gamepad: RIGHT
-pce_fast.input.port1.gamepad.right keyboard 275
+pce_fast.input.port1.gamepad.right %s
 
 ;pce_fast, Port 1, Gamepad: UP
-pce_fast.input.port1.gamepad.up keyboard 273
+pce_fast.input.port1.gamepad.up %s
+
+;Exit
+command.exit %s
 
 
     """ % (convert_event(controller_mapping['I'], 100),
@@ -92,7 +95,10 @@ pce_fast.input.port1.gamepad.up keyboard 273
     convert_event(controller_mapping['DOWN'], 13),
     convert_event(controller_mapping['LEFT'], 9),
     convert_event(controller_mapping['RIGHT'], 276),
-    convert_event(controller_mapping['UP'], 274))
+    convert_event(controller_mapping['UP'], 274),
+    convert_event(controller_mapping['EXIT_PROGRAM'], 2)
+
+    )
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)

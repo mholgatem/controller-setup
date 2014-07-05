@@ -60,25 +60,28 @@ def convert_event(event, default):
 try:
     output_file_data = """
 ;ngp, Built-In, Gamepad: A
-ngp.input.builtin.gamepad.a keyboard 258
+ngp.input.builtin.gamepad.a %s
 
 ;ngp, Built-In, Gamepad: B
-ngp.input.builtin.gamepad.b keyboard 259
+ngp.input.builtin.gamepad.b %s
 
 ;ngp, Built-In, Gamepad: OPTION
-ngp.input.builtin.gamepad.option keyboard 13
+ngp.input.builtin.gamepad.option %s
 
 ;ngp, Built-In, Gamepad: DOWN
-ngp.input.builtin.gamepad.down keyboard 115
+ngp.input.builtin.gamepad.down %s
 
 ;ngp, Built-In, Gamepad: LEFT
-ngp.input.builtin.gamepad.left keyboard 97
+ngp.input.builtin.gamepad.left %s
 
 ;ngp, Built-In, Gamepad: RIGHT
-ngp.input.builtin.gamepad.right keyboard 100
+ngp.input.builtin.gamepad.right %s
 
 ;ngp, Built-In, Gamepad: UP
-ngp.input.builtin.gamepad.up keyboard 119
+ngp.input.builtin.gamepad.up %s
+
+;Exit
+command.exit %s
 
     """ % (convert_event(controller_mapping['A'], 100),
     convert_event(controller_mapping['B'], 99),
@@ -86,7 +89,8 @@ ngp.input.builtin.gamepad.up keyboard 119
     convert_event(controller_mapping['DOWN'], 13),
     convert_event(controller_mapping['LEFT'], 9),
     convert_event(controller_mapping['RIGHT'], 276),
-    convert_event(controller_mapping['UP'], 274))
+    convert_event(controller_mapping['UP'], 274),
+    convert_event(controller_mapping['EXIT_PROGRAM'], 2))
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)

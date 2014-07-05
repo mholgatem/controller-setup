@@ -83,6 +83,9 @@ gb.input.builtin.gamepad.start %s
 ;gb, Built-In, Gamepad: UP 
 gb.input.builtin.gamepad.up %s
 
+;Exit
+command.exit %s
+
     """ % (convert_event(controller_mapping['A'], 100),
     convert_event(controller_mapping['B'], 99),
     convert_event(controller_mapping['DOWN'], 13),
@@ -90,7 +93,8 @@ gb.input.builtin.gamepad.up %s
     convert_event(controller_mapping['RIGHT'], 276),
     convert_event(controller_mapping['SELECT'], 275),
     convert_event(controller_mapping['START'], 273),
-    convert_event(controller_mapping['UP'], 274))
+    convert_event(controller_mapping['UP'], 274),
+    convert_event(controller_mapping['EXIT_PROGRAM'], 2) ) 
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)

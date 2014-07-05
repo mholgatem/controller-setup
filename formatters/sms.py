@@ -63,26 +63,28 @@ try:
 
 
 ;sms, Port 1, Gamepad: Fire 1/Start
-sms.input.port1.gamepad.fire1 keyboard 258
+sms.input.port1.gamepad.fire1 %s
 
 ;sms, Port 1, Gamepad: Fire 2
-sms.input.port1.gamepad.fire2 keyboard 259
+sms.input.port1.gamepad.fire2 %s
 
 ;sms, Port 1, Gamepad: Pause
-sms.input.port1.gamepad.pause keyboard 13
+sms.input.port1.gamepad.pause %s
 
 ;sms, Port 1, Gamepad: DOWN
-sms.input.port1.gamepad.down keyboard 115
+sms.input.port1.gamepad.down %s
 
 ;sms, Port 1, Gamepad: LEFT
-sms.input.port1.gamepad.left keyboard 97
+sms.input.port1.gamepad.left %s
 
 ;sms, Port 1, Gamepad: RIGHT
-sms.input.port1.gamepad.right keyboard 100
+sms.input.port1.gamepad.right %s
 
 ;sms, Port 1, Gamepad: UP
-sms.input.port1.gamepad.up keyboard 119
+sms.input.port1.gamepad.up %s
 
+;Exit
+command.exit %s
 
 
     """ % (convert_event(controller_mapping['1'], 100),
@@ -91,7 +93,8 @@ sms.input.port1.gamepad.up keyboard 119
     convert_event(controller_mapping['DOWN'], 13),
     convert_event(controller_mapping['LEFT'], 9),
     convert_event(controller_mapping['RIGHT'], 276),
-    convert_event(controller_mapping['UP'], 274))
+    convert_event(controller_mapping['UP'], 274),
+    convert_event(controller_mapping['EXIT_PROGRAM'], 2))
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)

@@ -50,7 +50,7 @@ try:
     SDL.Hotkeys.MovieToggleFrameDisplay = 46
     SDL.Hotkeys.MuteCapture = 39
     SDL.Hotkeys.Pause = 19
-    SDL.Hotkeys.Quit = 27
+    SDL.Hotkeys.Quit = %s
     SDL.Hotkeys.Reset = 292
     SDL.Hotkeys.SaveState = 286
     SDL.Hotkeys.Screenshot = 293
@@ -336,7 +336,8 @@ try:
     SDL.Zapper.0.DeviceType = Mouse
 
 
-    """ % (convert_event(controller_mapping['A'], 100), 
+    """ % (convert_event(controller_mapping['EXIT_PROGRAM'], 27), 
+convert_event(controller_mapping['A'], 100), 
  convert_event(controller_mapping['B'], 99),
  convert_event(controller_mapping['DOWN'], 274),
  convert_event(controller_mapping['LEFT'], 276),

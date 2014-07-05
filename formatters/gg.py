@@ -61,25 +61,28 @@ try:
     output_file_data = """
 
 ;gg, Built-In, Gamepad: Button 1
-gg.input.builtin.gamepad.button1 keyboard 258
+gg.input.builtin.gamepad.button1 %s
 
 ;gg, Built-In, Gamepad: Button 2
-gg.input.builtin.gamepad.button2 keyboard 259
+gg.input.builtin.gamepad.button2 %s
 
 ;gg, Built-In, Gamepad: Start
-gg.input.builtin.gamepad.start keyboard 13
+gg.input.builtin.gamepad.start %s
 
 ;gg, Built-In, Gamepad: DOWN
-gg.input.builtin.gamepad.down keyboard 115
+gg.input.builtin.gamepad.down %s
 
 ;gg, Built-In, Gamepad: LEFT
-gg.input.builtin.gamepad.left keyboard 97
+gg.input.builtin.gamepad.left %s
 
 ;gg, Built-In, Gamepad: RIGHT
-gg.input.builtin.gamepad.right keyboard 100
+gg.input.builtin.gamepad.right %s
 
 ;gg, Built-In, Gamepad: UP
-gg.input.builtin.gamepad.up keyboard 119
+gg.input.builtin.gamepad.up %s
+
+;Exit
+command.exit %s
 
 
     """ % (convert_event(controller_mapping['1'], 100),
@@ -88,7 +91,8 @@ gg.input.builtin.gamepad.up keyboard 119
     convert_event(controller_mapping['DOWN'], 13),
     convert_event(controller_mapping['LEFT'], 9),
     convert_event(controller_mapping['RIGHT'], 276),
-    convert_event(controller_mapping['UP'], 274))
+    convert_event(controller_mapping['UP'], 274),
+    convert_event(controller_mapping['EXIT_PROGRAM'], 2))
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
