@@ -1,6 +1,8 @@
 import json
 import sys
 import math
+import pygame
+pygame.init()
 
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
@@ -16,11 +18,16 @@ controller_mapping = json.loads(input_file_data)
 def convert_event(event, default):
     print event
     if event["type"] == 3:
-        return event["key"]
+        return "keyboard[%s,%s]" % (event['mod'], pygame.key.name(event["key"]) )
     elif event["type"] == 11:
         return "joystick_button[0,%s]" % event["button"] 
     elif event["type"] == 7:
-        return  "joystick_digital[0,0,%s,%s]" % (event["axis"], max(0,int(math.ceil(event["value"]))) )
+        if event['value'] < 0:
+            event['value'] = 1
+        else:
+            event['value'] = 0
+
+        return  "joystick_digital[0,0,%s,%s]" % (event["axis"], event["value"] )
 
 try:
     output_file_data = """
@@ -360,13 +367,13 @@ input_map[p1_doubleright_up] keyboard[1,scan0] or keyboard[0,r]
 input_map[p1_doubleright_down] keyboard[1,scan0] or keyboard[0,f]
 input_map[p1_doubleright_right] keyboard[1,scan0] or keyboard[0,g]
 input_map[p1_doubleright_left] keyboard[1,scan0] or keyboard[0,d]
-input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,1] keyboard[0,2] or keyboard[0,esc] or keyboard[1,scan0]
+input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,1] keyboard[0,2] or keyboard[0,esc] or keyboard[1,scan0] or %s
     """ % (
       #Now for joystick events
-     convert_event(controller_mapping['DOWN'], 0), 
-     convert_event(controller_mapping['UP'], 0),
-     convert_event(controller_mapping['LEFT'], 0),
+     convert_event(controller_mapping['UP'], 0), 
+     convert_event(controller_mapping['DOWN'], 0),
      convert_event(controller_mapping['RIGHT'], 0),
+     convert_event(controller_mapping['LEFT'], 0),
      convert_event(controller_mapping['Top 1'], 3), 
      convert_event(controller_mapping['Top 2'], 2),
      convert_event(controller_mapping['Top 3'], 1), 
@@ -374,7 +381,9 @@ input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,1] keyboa
      convert_event(controller_mapping['Bottom 2'], 4),
      convert_event(controller_mapping['Bottom 3'], 6), 
      convert_event(controller_mapping['START'], 9), 
-     convert_event(controller_mapping['COIN'], 8) )
+     convert_event(controller_mapping['COIN'], 8),
+     convert_event(controller_mapping['EXIT_PROGRAM'], 5)
+     )
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
