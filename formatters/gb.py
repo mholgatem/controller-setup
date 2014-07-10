@@ -11,14 +11,14 @@ pygame.joystick.init()
 try:
     stick = pygame.joystick.Joystick(0)
     stick.init()
+    #print stick.get_numaxes(), stick.get_numballs(), stick.get_numhats(), stick.get_numbuttons()
+    joystickID = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
+
+    print "%s" % joystickID
+    print "%016X" % joystickID
 except:
-    pass
+    joystickID = 0
 
-#print stick.get_numaxes(), stick.get_numballs(), stick.get_numhats(), stick.get_numbuttons()
-joystickID = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
-
-print "%s" % joystickID
-print "%016X" % joystickID
 
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
