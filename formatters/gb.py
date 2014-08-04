@@ -3,6 +3,7 @@ import sys
 import pygame
 from pygame.locals import *
 import subprocess
+import os
 
 pygame.init()
 pygame.font.init()
@@ -99,6 +100,10 @@ command.exit %s
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
+
+directory = os.path.dirname(output_file_name)
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)

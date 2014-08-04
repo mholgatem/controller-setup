@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"
@@ -106,6 +107,10 @@ try:
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
+
+directory = os.path.dirname(output_file_name)
+if not os.path.exists(directory):
+    os.makedirs(directory)
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)

@@ -2,6 +2,7 @@ import json
 import sys
 import math
 import pygame
+import os
 pygame.init()
 
 #  TODO Abstract this into a base formatter class
@@ -10,6 +11,10 @@ if len(sys.argv) < 3:
 
 input_file_name = sys.argv[1]
 output_file_name = sys.argv[2]
+
+
+
+
 
 input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
@@ -387,6 +392,11 @@ input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,1] keyboa
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
+
+directory = os.path.dirname(output_file_name)
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)
