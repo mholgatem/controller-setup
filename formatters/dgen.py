@@ -32,7 +32,7 @@ def convert_event(event, default, joystick):
         return event["button"]
     elif event["type"] == 7 and joystick:
         #return "joystick%s-axis%s-min" % (event["axis"], 
-    return default
+	return default
 
 #  Dgen does things backwards... so we convert all joystick input into backwards way here
 joystick_lines = ["joypad1_b%d = %s" % (event["button"], identifer) for identifer, event in controller_mapping.iteritems() if event["type"]==11] 
@@ -191,10 +191,10 @@ int_opengl_height = 480
 # lines if you don't compile joystick support in. [PKH]
 
 # Joypad 1
-#joy_pad1_up = %s
-#joy_pad1_down = %s
-#joy_pad1_left = %s
-#joy_pad1_right = %s
+#joy_pad1_up = 0
+#joy_pad1_down = 0
+#joy_pad1_left = 0
+#joy_pad1_right = 0
 joy_pad1_a = %s
 joy_pad1_b = %s
 joy_pad1_c = %s
