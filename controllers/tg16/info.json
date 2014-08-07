@@ -1,2 +1,2 @@
-{"image": "tg16_controller.png", "name": "tg16", "controls": ["I", "II", "RUN", "SELECT",  "LEFT", "UP", "RIGHT", "DOWN", "EXIT_PROGRAM"], "formatters": ["tg16.py"], "output_directory": ["/home/pi/.mednafen/pce_fast.cfg"]}
+{"image": "tg16_controller.png", "name": "tg16", "max_players": 2, "controls": ["I", "II", "RUN", "SELECT",  "LEFT", "UP", "RIGHT", "DOWN", "*EXIT_PROGRAM"], "formatters": ["tg16.py"], "output_directory": ["/home/pi/.mednafen/pce_fast.cfg"]}
 

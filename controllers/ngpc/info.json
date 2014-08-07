@@ -1,2 +1,2 @@
-{"image": "ngpc_controller.png", "name": "ngpc", "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "OPTION", "EXIT_PROGRAM"], "formatters": ["ngpc.py"], "output_directory": ["/home/pi/.mednafen/ngpc.cfg"]}
+{"image": "ngpc_controller.png", "name": "ngpc", "max_players": 1, "controls": ["A", "B",  "LEFT", "UP", "RIGHT", "DOWN", "OPTION", "*EXIT_PROGRAM"], "formatters": ["ngpc.py"], "output_directory": ["/home/pi/.mednafen/ngpc.cfg"]}
 

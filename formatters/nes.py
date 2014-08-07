@@ -1,6 +1,5 @@
 import json
 import sys
-import os
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"
@@ -10,17 +9,40 @@ output_file_name = sys.argv[2]
 
 input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
+num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
-    if event["type"] == 3:
-            return event["key"]
-    elif event["type"] == 11:
-        return event["button"]
-    elif event["type"] == 7:
-        return 32767
-        #return event["axis"]
-    return default
+	if event["type"] == 3:
+		return event["key"]
+	elif event["type"] == 11:
+		return event["button"]
+	elif event["type"] == 7:
+		return 32767
+		#return event["axis"]
+	return default
+	
+player1 = (convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 27), 
+ convert_event(controller_mapping[0]['A'], 100), 
+ convert_event(controller_mapping[0]['B'], 99),
+ convert_event(controller_mapping[0]['DOWN'], 274),
+ convert_event(controller_mapping[0]['LEFT'], 276),
+ convert_event(controller_mapping[0]['RIGHT'], 275),   
+ convert_event(controller_mapping[0]['SELECT'], 9),
+ convert_event(controller_mapping[0]['START'], 13), 
+ convert_event(controller_mapping[0]['UP'], 273))
+ 
+player2 = ((convert_event(controller_mapping[1]['A'], 100), 
+ convert_event(controller_mapping[1]['B'], 99),
+ convert_event(controller_mapping[1]['DOWN'], 274),
+ convert_event(controller_mapping[1]['LEFT'], 276),
+ convert_event(controller_mapping[1]['RIGHT'], 275),   
+ convert_event(controller_mapping[1]['SELECT'], 9),
+ convert_event(controller_mapping[1]['START'], 13), 
+ convert_event(controller_mapping[1]['UP'], 273)) 
+ if num_players > 1 else ((279,) * 8))
+ 
+ 
 try:
     output_file_data = """
 # Auto-generated
@@ -174,17 +196,17 @@ SDL.Input.GamePad.0Start = %d
 SDL.Input.GamePad.0TurboA = 0
 SDL.Input.GamePad.0TurboB = 0
 SDL.Input.GamePad.0Up = %d
-SDL.Input.GamePad.1A = 0
-SDL.Input.GamePad.1B = 0
+SDL.Input.GamePad.1A = %d
+SDL.Input.GamePad.1B = %d
 SDL.Input.GamePad.1DeviceNum = 0
-SDL.Input.GamePad.1Down = 0
-SDL.Input.GamePad.1Left = 0
-SDL.Input.GamePad.1Right = 0
-SDL.Input.GamePad.1Select = 0
-SDL.Input.GamePad.1Start = 0
+SDL.Input.GamePad.1Down = %d
+SDL.Input.GamePad.1Left = %d
+SDL.Input.GamePad.1Right = %d
+SDL.Input.GamePad.1Select = %d
+SDL.Input.GamePad.1Start = %d
 SDL.Input.GamePad.1TurboA = 0
 SDL.Input.GamePad.1TurboB = 0
-SDL.Input.GamePad.1Up = 0
+SDL.Input.GamePad.1Up = %d
 SDL.Input.GamePad.2A = 0
 SDL.Input.GamePad.2B = 0
 SDL.Input.GamePad.2DeviceNum = 0
@@ -337,23 +359,12 @@ SDL.Sound.RecordFile =
 SDL.Zapper.0.DeviceType = Mouse
 
 
-    """ % (convert_event(controller_mapping['EXIT_PROGRAM'], 27), 
-convert_event(controller_mapping['A'], 100), 
- convert_event(controller_mapping['B'], 99),
- convert_event(controller_mapping['DOWN'], 274),
- convert_event(controller_mapping['LEFT'], 276),
- convert_event(controller_mapping['RIGHT'], 275),   
- convert_event(controller_mapping['SELECT'], 9),
- convert_event(controller_mapping['START'], 13), 
- convert_event(controller_mapping['UP'], 273))
+    """ % (player1 + player2)
+ 
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
-
-directory = os.path.dirname(output_file_name)
-if not os.path.exists(directory):
-    os.makedirs(directory)
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)

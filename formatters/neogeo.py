@@ -1,6 +1,5 @@
 import json
 import sys
-import os
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"
@@ -10,16 +9,65 @@ output_file_name = sys.argv[2]
 
 input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
+num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default, joystick=False):
-    if event["type"] == 3 and not joystick:
-            return event["key"]
-    elif event["type"] == 11 and joystick:
-        return event["button"]
-    elif event["type"] == 7 and joystick:
-        return event["axis"]
-    return default
+	if event["type"] == 3 and not joystick:
+		return event["key"]
+	elif event["type"] == 11 and joystick:
+		return event["button"]
+	elif event["type"] == 7 and joystick:
+		return event["axis"]
+	return default
+	
+player1 = (convert_event(controller_mapping[0]['A'], 100, False), 
+     convert_event(controller_mapping[0]['B'], 99, False),
+     convert_event(controller_mapping[0]['C'], 115, False), 
+     convert_event(controller_mapping[0]['D'], 120, False), 
+     convert_event(controller_mapping[0]['START'], 13, False), 
+     convert_event(controller_mapping[0]['COIN'], 9, False),
+     convert_event(controller_mapping[0]['LEFT'], 276, False), 
+     convert_event(controller_mapping[0]['RIGHT'], 275, False), 
+     convert_event(controller_mapping[0]['UP'], 273, False),
+     convert_event(controller_mapping[0]['DOWN'], 274, False),
+     convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 27, False))
+	 
+	 
+player2 = ((convert_event(controller_mapping[1]['A'], 100, False), 
+     convert_event(controller_mapping[1]['B'], 99, False),
+     convert_event(controller_mapping[1]['C'], 115, False), 
+     convert_event(controller_mapping[1]['D'], 120, False), 
+     convert_event(controller_mapping[1]['START'], 13, False), 
+     convert_event(controller_mapping[1]['COIN'], 9, False),
+     convert_event(controller_mapping[1]['LEFT'], 276, False), 
+     convert_event(controller_mapping[1]['RIGHT'], 275, False), 
+     convert_event(controller_mapping[1]['UP'], 273, False),
+     convert_event(controller_mapping[1]['DOWN'], 274, False))
+	 if num_players > 1 else ((999,) * 10))
+	 
+	 
+	 
+      #Now for joystick events
+joypad1 = (convert_event(controller_mapping[0]['A'], 3, True), 
+     convert_event(controller_mapping[0]['B'], 2, True),
+     convert_event(controller_mapping[0]['C'], 1, True), 
+     convert_event(controller_mapping[0]['D'], 0, True), 
+     convert_event(controller_mapping[0]['START'], 9, True), 
+     convert_event(controller_mapping[0]['COIN'], 8, True), 
+     convert_event(controller_mapping[0]['LEFT'], 0, True), 
+     convert_event(controller_mapping[0]['UP'], 1, True))
+	 
+joypad2 = ((convert_event(controller_mapping[1]['A'], 0, True), 
+     convert_event(controller_mapping[1]['B'], 1, True),
+     convert_event(controller_mapping[1]['C'], 2, True), 
+     convert_event(controller_mapping[1]['D'], 3, True), 
+     convert_event(controller_mapping[1]['START'], 9, True), 
+     convert_event(controller_mapping[1]['COIN'], 8, True), 
+     convert_event(controller_mapping[1]['LEFT'], 0, True), 
+     convert_event(controller_mapping[1]['UP'], 1, True)) 
+	 if num_players > 1 else (0,1,2,3,9,8,0,1))
+	 
 try:
     output_file_data = """
     [Keyboard]
@@ -36,21 +84,21 @@ try:
     RIGHT_1=%d
     UP_1=%d
     DOWN_1=%d
-    QUIT=27
+    QUIT=%d
 
     #player 2 keyboard controls, disabled by default
-    A_2=999
-    B_2=999
-    X_2=999
-    Y_2=999
+    A_2=%d
+    B_2=%d
+    X_2=%d
+    Y_2=%d
     L_2=999
     R_2=999
-    START_2=999
-    SELECT_2=999
-    LEFT_2=999
-    RIGHT_2=999
-    UP_2=999
-    DOWN_2=999
+    START_2=%d
+    SELECT_2=%d
+    LEFT_2=%d
+    RIGHT_2=%d
+    UP_2=%d
+    DOWN_2=%d
 
     [Joystick]
     # Get codes from "jstest /dev/input/js0"
@@ -67,17 +115,17 @@ try:
     JA_LR=%d
     JA_UD=%d
     #player 2 button configuration
-    A_2=0
-    B_2=1
-    X_2=2
-    Y_2=3
-    L_2=4
-    R_2=6
-    START_2=9
-    SELECT_2=8
+    A_2=%d
+    B_2=%d
+    X_2=%d
+    Y_2=%d
+    L_2=999
+    R_2=999
+    START_2=%d
+    SELECT_2=%d
     #Joystick axis
-    JA_LR_2=0
-    JA_UD_2=1
+    JA_LR_2=%d
+    JA_UD_2=%d
 
     [Graphics]
     DisplaySmoothStretch=1
@@ -89,32 +137,10 @@ try:
     [Sound]
 
 
-    """ % (convert_event(controller_mapping['A'], 100, False), 
-        convert_event(controller_mapping['B'], 99, False),
-     convert_event(controller_mapping['C'], 115, False), 
-     convert_event(controller_mapping['D'], 120, False), 
-     convert_event(controller_mapping['START'], 13, False), 
-     convert_event(controller_mapping['COIN'], 9, False),
-     convert_event(controller_mapping['LEFT'], 276, False), 
-     convert_event(controller_mapping['RIGHT'], 275, False), 
-     convert_event(controller_mapping['UP'], 273, False),
-     convert_event(controller_mapping['DOWN'], 274, False),
-      #Now for joystick events
-     convert_event(controller_mapping['A'], 3, True), 
-     convert_event(controller_mapping['B'], 2, True),
-     convert_event(controller_mapping['C'], 1, True), 
-     convert_event(controller_mapping['D'], 0, True), 
-     convert_event(controller_mapping['START'], 9, True), 
-     convert_event(controller_mapping['COIN'], 8, True), 
-     convert_event(controller_mapping['LEFT'], 0, True), 
-     convert_event(controller_mapping['UP'], 1, True) )
+    """ % (player1 + player2 + joypad1 + joypad2 )
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
-
-directory = os.path.dirname(output_file_name)
-if not os.path.exists(directory):
-    os.makedirs(directory)
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)

@@ -3,7 +3,6 @@ import sys
 import pygame
 from pygame.locals import *
 import subprocess
-import os
 
 pygame.init()
 pygame.font.init()
@@ -30,32 +29,24 @@ output_file_name = sys.argv[2]
 
 input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
+num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
-    '''
-        event = event data
-        default = value to default to if joystick doesn't match
-        joystick = True if looking for a joystick value
-    '''
-    if event["type"] == 3:
-	foo = "%s %s" % ('keyboard', event["key"])
-	#print foo
-	return foo
-    elif event["type"] == 11:
-        foo = "joystick %016X %08x" % (joystickID, event["button"])
-    	#print foo
-	return foo
-    elif event["type"] == 7:
-        if event["value"] > 0:
-		foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0x8000)
-	elif event["value"] < 0:
-		foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0xc000)
 
-	#print event
-	#print foo
-	return foo
-    return default
+	if event["type"] == 3:
+		foo = "%s %s" % ('keyboard', event["key"])
+		return foo
+	elif event["type"] == 11:
+		foo = "joystick %016X %08x" % (joystickID, event["button"])
+		return foo
+	elif event["type"] == 7:
+		if event["value"] > 0:
+			foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0x8000)
+		elif event["value"] < 0:
+			foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0xc000)
+		return foo
+	return default
 
 
 try:
@@ -86,22 +77,18 @@ gg.input.builtin.gamepad.up %s
 command.exit %s
 
 
-    """ % (convert_event(controller_mapping['1'], 100),
-    convert_event(controller_mapping['2'], 99),
-    convert_event(controller_mapping['START'], 14),
-    convert_event(controller_mapping['DOWN'], 13),
-    convert_event(controller_mapping['LEFT'], 9),
-    convert_event(controller_mapping['RIGHT'], 276),
-    convert_event(controller_mapping['UP'], 274),
-    convert_event(controller_mapping['EXIT_PROGRAM'], 2))
+    """ % (convert_event(controller_mapping[0]['1'], 100),
+    convert_event(controller_mapping[0]['2'], 99),
+    convert_event(controller_mapping[0]['START'], 14),
+    convert_event(controller_mapping[0]['DOWN'], 13),
+    convert_event(controller_mapping[0]['LEFT'], 9),
+    convert_event(controller_mapping[0]['RIGHT'], 276),
+    convert_event(controller_mapping[0]['UP'], 274),
+    convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 2))
 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
-
-directory = os.path.dirname(output_file_name)
-if not os.path.exists(directory):
-    os.makedirs(directory)
 
 with open(output_file_name, "w") as output_file:
     output_file.write(output_file_data)

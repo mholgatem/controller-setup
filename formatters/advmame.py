@@ -12,28 +12,58 @@ if len(sys.argv) < 3:
 input_file_name = sys.argv[1]
 output_file_name = sys.argv[2]
 
-
-
-
-
 input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
+num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
-    print event
+
     if event["type"] == 3:
-        return "keyboard[%s,%s]" % (event['mod'], pygame.key.name(event["key"]) )
+        return "or keyboard[%s,%s]" % (event['mod'], pygame.key.name(event["key"]).replace('left ', 'l').replace('right ', 'r'))
     elif event["type"] == 11:
-        return "joystick_button[0,%s]" % event["button"] 
+        return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
     elif event["type"] == 7:
         if event['value'] < 0:
             event['value'] = 1
         else:
             event['value'] = 0
+        return  "or joystick_digital[%d,0,%s,%s]" % (event['joy'], event["axis"], event["value"] )
+	
+	return ''
 
-        return  "joystick_digital[0,0,%s,%s]" % (event["axis"], event["value"] )
+		
 
+
+player1 = (convert_event(controller_mapping[0]['UP'], 0), 
+     convert_event(controller_mapping[0]['DOWN'], 0),
+     convert_event(controller_mapping[0]['RIGHT'], 0),
+     convert_event(controller_mapping[0]['LEFT'], 0),
+     convert_event(controller_mapping[0]['Top 1'], 3), 
+     convert_event(controller_mapping[0]['Top 2'], 2),
+     convert_event(controller_mapping[0]['Top 3'], 1), 
+     convert_event(controller_mapping[0]['Bottom 1'], 0), 
+     convert_event(controller_mapping[0]['Bottom 2'], 4),
+     convert_event(controller_mapping[0]['Bottom 3'], 6), 
+     convert_event(controller_mapping[0]['START'], 9), 
+     convert_event(controller_mapping[0]['COIN'], 8),
+     convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 5))
+
+player2 = ((convert_event(controller_mapping[1]['UP'], 0), 
+     convert_event(controller_mapping[1]['DOWN'], 0),
+     convert_event(controller_mapping[1]['RIGHT'], 0),
+     convert_event(controller_mapping[1]['LEFT'], 0),
+     convert_event(controller_mapping[1]['Top 1'], 3), 
+     convert_event(controller_mapping[1]['Top 2'], 2),
+     convert_event(controller_mapping[1]['Top 3'], 1), 
+     convert_event(controller_mapping[1]['Bottom 1'], 0), 
+     convert_event(controller_mapping[1]['Bottom 2'], 4),
+     convert_event(controller_mapping[1]['Bottom 3'], 6), 
+     convert_event(controller_mapping[1]['START'], 9), 
+     convert_event(controller_mapping[1]['COIN'], 8)) 
+	 if num_players > 1 else (('',) * 12))
+	 
+	 
 try:
     output_file_data = """
 device_video_clock 5 - 50 / 15.62 / 50 ; 5 - 50 / 15.73 / 60
@@ -336,34 +366,6 @@ ui_font auto
 ui_fontsize auto
 ui_helpimage auto
 ui_translucency 0.8
-input_map[p1_up] keyboard[1,scan0] or keyboard[0,8_pad] or keyboard[0,up] or keyboard[1,scan0] or %s
-input_map[p1_down] keyboard[1,scan0] or keyboard[0,2_pad] or keyboard[0,down] or keyboard[1,scan0] or %s
-input_map[p1_right] keyboard[1,scan0] or keyboard[0,6_pad] or keyboard[0,right] or keyboard[1,scan0] or %s
-input_map[p1_left] keyboard[1,scan0] or keyboard[0,4_pad] or keyboard[0,left] or keyboard[1,scan0] or %s
-input_map[p1_button1] keyboard[1,scan0] or keyboard[0,lcontrol] or %s
-input_map[p1_button2] keyboard[1,scan0] or keyboard[0,lalt] or %s
-input_map[p1_button3] keyboard[1,scan0] or keyboard[0,space] or %s
-input_map[p1_button4] keyboard[1,scan0] or keyboard[0,lshift] or %s
-input_map[p1_button5] keyboard[1,scan0] or keyboard[0,z] or %s
-input_map[p1_button6] keyboard[1,scan0] or keyboard[0,x] or %s
-input_map[p1_button7] keyboard[1,scan0] or keyboard[0,c] 
-input_map[p1_button8] keyboard[1,scan0] or keyboard[0,5]
-input_map[start1] keyboard[1,scan0] or keyboard[0,1] or %s
-input_map[start2] keyboard[1,scan0] or keyboard[0,2]
-input_map[coin1] keyboard[1,scan0] or keyboard[0,5] or %s
-input_map[coin2] keyboard[1,scan0] or keyboard[0,6]
-input_map[p2_up] keyboard[1,scan0] or keyboard[0,r]
-input_map[p2_down] keyboard[1,scan0] or keyboard[0,f]
-input_map[p2_right] keyboard[1,scan0] or keyboard[0,g]
-input_map[p2_left] keyboard[1,scan0] or keyboard[0,d]
-input_map[p2_button1] keyboard[1,scan0] or keyboard[0,a]
-input_map[p2_button2] keyboard[1,scan0] or keyboard[0,s]
-input_map[p2_button3] keyboard[1,scan0] or keyboard[0,q]
-input_map[p2_button4] keyboard[1,scan0] or keyboard[0,w]
-input_map[p2_button5] keyboard[1,scan0] or keyboard[0,e]
-input_map[p2_button6] keyboard[1,scan0] or keyboard[0,openbrace]
-input_map[p2_button7] keyboard[1,scan0] or keyboard[0,closebrace]
-input_map[p2_button8] keyboard[1,scan0] or keyboard[0,6]
 input_map[p1_doubleleft_up] keyboard[1,scan0] or keyboard[0,8_pad]
 input_map[p1_doubleleft_down] keyboard[1,scan0] or keyboard[0,2_pad]
 input_map[p1_doubleleft_right] keyboard[1,scan0] or keyboard[0,6_pad]
@@ -372,23 +374,37 @@ input_map[p1_doubleright_up] keyboard[1,scan0] or keyboard[0,r]
 input_map[p1_doubleright_down] keyboard[1,scan0] or keyboard[0,f]
 input_map[p1_doubleright_right] keyboard[1,scan0] or keyboard[0,g]
 input_map[p1_doubleright_left] keyboard[1,scan0] or keyboard[0,d]
-input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,1] keyboard[0,2] or keyboard[0,esc] or keyboard[1,scan0] or %s
-    """ % (
-      #Now for joystick events
-     convert_event(controller_mapping['UP'], 0), 
-     convert_event(controller_mapping['DOWN'], 0),
-     convert_event(controller_mapping['RIGHT'], 0),
-     convert_event(controller_mapping['LEFT'], 0),
-     convert_event(controller_mapping['Top 1'], 3), 
-     convert_event(controller_mapping['Top 2'], 2),
-     convert_event(controller_mapping['Top 3'], 1), 
-     convert_event(controller_mapping['Bottom 1'], 0), 
-     convert_event(controller_mapping['Bottom 2'], 4),
-     convert_event(controller_mapping['Bottom 3'], 6), 
-     convert_event(controller_mapping['START'], 9), 
-     convert_event(controller_mapping['COIN'], 8),
-     convert_event(controller_mapping['EXIT_PROGRAM'], 5)
-     )
+input_map[p1_up] keyboard[1,scan0] %s
+input_map[p1_down] keyboard[1,scan0] %s
+input_map[p1_right] keyboard[1,scan0] %s
+input_map[p1_left] keyboard[1,scan0] %s
+input_map[p1_button1] keyboard[1,scan0] %s
+input_map[p1_button2] keyboard[1,scan0] %s
+input_map[p1_button3] keyboard[1,scan0] %s
+input_map[p1_button4] keyboard[1,scan0] %s
+input_map[p1_button5] keyboard[1,scan0] %s
+input_map[p1_button6] keyboard[1,scan0] %s
+input_map[p1_button7] keyboard[1,scan0]
+input_map[p1_button8] keyboard[1,scan0]
+input_map[start1] keyboard[1,scan0] %s
+input_map[coin1] keyboard[1,scan0] %s
+input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,esc] %s
+input_map[p2_up] keyboard[1,scan0] %s
+input_map[p2_down] keyboard[1,scan0] %s
+input_map[p2_right] keyboard[1,scan0] %s
+input_map[p2_left] keyboard[1,scan0] %s
+input_map[p2_button1] keyboard[1,scan0] %s
+input_map[p2_button2] keyboard[1,scan0] %s
+input_map[p2_button3] keyboard[1,scan0] %s
+input_map[p2_button4] keyboard[1,scan0] %s
+input_map[p2_button5] keyboard[1,scan0] %s
+input_map[p2_button6] keyboard[1,scan0] %s
+input_map[p2_button7] keyboard[1,scan0]
+input_map[p2_button8] keyboard[1,scan0]
+input_map[start2] keyboard[1,scan0] %s
+input_map[coin2] keyboard[1,scan0] %s
+    """ % ( player1 +  player2 )
+	 
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
