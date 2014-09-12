@@ -31,10 +31,14 @@ def convert_event(event, default, joystick):
 		if key_name != 'unknown key':
 			return key_name
 	elif event["type"] == 11 and joystick:
-		return event["button"]
+		#"joystick0-button1"
+		joystick_button = "joystick%d-button%d" % (event['joy'], event['button'])
+		return joystick_button
 	elif event["type"] == 7 and joystick:
-		pass
-		#return "joystick%s-axis%s-min" % (event["axis"], 
+		#"joystick0-axis1-min"
+		min_max = "min" if event['value'] < 0 else "max"
+		joystick_move = "joystick%d-axis%d-%s" % (event['joy'], event['axis'], min_max)
+		return joystick_move = ["joypad1_b%d = %s" % (event["button"], identifer) for identifer, event in controller_mapping.iteritems() if event["type"]==11] 
 	return default
  
 
@@ -65,9 +69,13 @@ player2 = ((convert_event(controller_mapping[1]['UP'], 'kp_up', False),
     convert_event(controller_mapping[1]['Z'], 'page_up', False),
     convert_event(controller_mapping[1]['MODE'], 'kp_plus', False),
     convert_event(controller_mapping[1]['START'], 'kp_enter', False)) 
-	if num_players > 1 else (('end',) * 12))
+	if num_players > 1 else (('',) * 12))
 	
-joypad1= (convert_event(controller_mapping[0]['A'], 5, True),
+joypad1= (convert_event(controller_mapping[0]['UP'], 5, True),
+	convert_event(controller_mapping[0]['DOWN'], 5, True),
+	convert_event(controller_mapping[0]['LEFT'], 5, True),
+	convert_event(controller_mapping[0]['RIGHT'], 5, True),
+	convert_event(controller_mapping[0]['A'], 5, True),
     convert_event(controller_mapping[0]['B'], 6, True),
     convert_event(controller_mapping[0]['C'], 9, True),
     convert_event(controller_mapping[0]['X'], 8, True),
@@ -76,7 +84,11 @@ joypad1= (convert_event(controller_mapping[0]['A'], 5, True),
     convert_event(controller_mapping[0]['START'], 0, True), 
     convert_event(controller_mapping[0]['MODE'], 1, True))
 	
-joypad2 = ((convert_event(controller_mapping[1]['A'], 5, True),
+joypad2 = ((convert_event(controller_mapping[1]['UP'], 5, True),
+	convert_event(controller_mapping[1]['DOWN'], 5, True),
+	convert_event(controller_mapping[1]['LEFT'], 5, True),
+	convert_event(controller_mapping[1]['RIGHT'], 5, True),
+	convert_event(controller_mapping[1]['A'], 5, True),
     convert_event(controller_mapping[1]['B'], 6, True),
     convert_event(controller_mapping[1]['C'], 9, True),
     convert_event(controller_mapping[1]['X'], 8, True),
@@ -84,7 +96,7 @@ joypad2 = ((convert_event(controller_mapping[1]['A'], 5, True),
     convert_event(controller_mapping[1]['Z'], 0, True), 
     convert_event(controller_mapping[1]['START'], 0, True), 
     convert_event(controller_mapping[1]['MODE'], 1, True)) 
-	if num_players > 1 else (('0',)*8))
+	if num_players > 1 else (('0',)*12))
 
 
 
@@ -257,10 +269,10 @@ int_opengl_height = -1
 # lines if you don't compile joystick support in. [PKH]
 
 # Joypad 1
-#joy_pad1_up = 0
-#joy_pad1_down = 0
-#joy_pad1_left = 0
-#joy_pad1_right = 0
+joy_pad1_up = %s
+joy_pad1_down = %s
+joy_pad1_left = %s
+joy_pad1_right = %s
 joy_pad1_a = %s
 joy_pad1_b = %s
 joy_pad1_c = %s
@@ -271,6 +283,10 @@ joy_pad1_start = %s
 joy_pad1_mode = %s
 
 # Joypad 2
+joy_pad2_up = %s
+joy_pad2_down = %s
+joy_pad2_left = %s
+joy_pad2_right = %s
 joy_pad2_a = %s
 joy_pad2_b = %s
 joy_pad2_c = %s
