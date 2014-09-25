@@ -1,9 +1,6 @@
 import json
 import sys
-import math
-import pygame
 import os
-pygame.init()
 
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
@@ -20,7 +17,7 @@ num_players = len(controller_mapping)
 def convert_event(event, default):
 
     if event["type"] == 3:
-        return "or keyboard[%s,%s]" % (event['mod'], pygame.key.name(event["key"]).replace('left ', 'l').replace('right ', 'r'))
+        return "or keyboard[%s,%s]" % (event['mod'], event["keyname"].replace('left ', 'l').replace('right ', 'r'))
     elif event["type"] == 11:
         return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
     elif event["type"] == 7:
