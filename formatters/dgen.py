@@ -1,14 +1,10 @@
 import json
 import sys
-import pygame
 import os
 
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"
-	
-#  we need this to get the text name of keys...
-pygame.init()
 
 input_file_name = sys.argv[1]
 output_file_name = sys.argv[2]
@@ -27,7 +23,7 @@ num_players = len(controller_mapping)
 def convert_event(event, default, joystick):
 
 	if event["type"] in [2,3] and not joystick:
-		key_name = pygame.key.name(int(event["key"])).replace('left ','l').replace('right ', 'r')
+		key_name = event["keyname"].replace('left ','l').replace('right ', 'r')
 		if key_name != 'unknown key':
 			return key_name
 	elif event["type"] in [10,11] and joystick:
@@ -38,7 +34,7 @@ def convert_event(event, default, joystick):
 		#"joystick0-axis1-min"
 		min_max = "min" if event['value'] < 0 else "max"
 		joystick_move = "joystick%d-axis%d-%s" % (event['joy'], event['axis'], min_max)
-		return joystick_move = ["joypad1_b%d = %s" % (event["button"], identifer) for identifer, event in controller_mapping.iteritems() if event["type"]==11] 
+		return joystick_move
 	return default
  
 
