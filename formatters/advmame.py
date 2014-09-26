@@ -2,6 +2,7 @@ import json
 import sys
 import os
 
+
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
     print "Formatter requires 2 arguments, input file and output file name"

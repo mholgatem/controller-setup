@@ -1,23 +1,5 @@
 import json
 import sys
-import pygame
-from pygame.locals import *
-import subprocess
-
-pygame.init()
-pygame.font.init()
-pygame.joystick.init()
-
-try:
-    stick = pygame.joystick.Joystick(0)
-    stick.init()
-    #print stick.get_numaxes(), stick.get_numballs(), stick.get_numhats(), stick.get_numbuttons()
-    joystickID = stick.get_numaxes() + stick.get_numballs() + stick.get_numhats() + stick.get_numbuttons()
-
-    print "%s" % joystickID
-    print "%016X" % joystickID
-except:
-    joystickID = 0
 
 
 #  TODO Abstract this into a base formatter class
@@ -38,13 +20,13 @@ def convert_event(event, default):
 		foo = "%s %s" % ('keyboard', event["key"])
 		return foo
 	elif event["type"] in [10,11]:
-		foo = "joystick %016X %08x" % (joystickID, event["button"])
+		foo = "joystick %016X %08x" % (event["joystickID"], event["button"])
 		return foo
 	elif event["type"] == 7:
 		if event["value"] > 0:
-			foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0x8000)
+			foo = "joystick %016X %08x" % (event["joystickID"], event["axis"] ^ 0x8000)
 		elif event["value"] < 0:
-			foo = "joystick %016X %08x" % (joystickID, event["axis"] ^ 0xc000)
+			foo = "joystick %016X %08x" % (event["joystickID"], event["axis"] ^ 0xc000)
 		return foo
 	return default
 
