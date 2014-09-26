@@ -14,9 +14,9 @@ num_players = len(controller_mapping)
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default, joystick):
 
-	if event["type"] == 3 and not joystick:
+	if event["type"] in [2,3] and not joystick:
 		return event["key"]
-	elif event["type"] == 11 and joystick:
+	elif event["type"] in [10,11] and joystick:
 		return event["button"]
 	elif event["type"] == 7 and joystick:
 		return event["axis"]

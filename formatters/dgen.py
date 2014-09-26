@@ -26,11 +26,11 @@ num_players = len(controller_mapping)
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default, joystick):
 
-	if event["type"] == 3 and not joystick:
+	if event["type"] in [2,3] and not joystick:
 		key_name = pygame.key.name(int(event["key"])).replace('left ','l').replace('right ', 'r')
 		if key_name != 'unknown key':
 			return key_name
-	elif event["type"] == 11 and joystick:
+	elif event["type"] in [10,11] and joystick:
 		#"joystick0-button1"
 		joystick_button = "joystick%d-button%d" % (event['joy'], event['button'])
 		return joystick_button
