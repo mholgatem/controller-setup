@@ -14,37 +14,46 @@ controller_mapping = json.loads(input_file_data)
 num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
-def convert_event(event, default):
+def convert_event(event, default, joydirection = None):
 	if event["type"] in [2,3]:
 		return event["key"]
 	elif event["type"] in [10,11]:
 		return event["button"]
 	elif event["type"] == 7:
-		return 32767
-		#return event["axis"]
+		if joydirection == "DOWN":
+			return 32769
+		elif joydirection == "LEFT":
+			return 49152
+		elif joydirection == "RIGHT":
+			return 32768
+		elif joydirection == "UP":
+			return 49153
+		elif joydirection == "CONTROLLER_TYPE":
+			return "Joystick"
 	return default
 	
 player1 = (convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 27), 
  convert_event(controller_mapping[0]['A'], 100), 
  convert_event(controller_mapping[0]['B'], 99),
- convert_event(controller_mapping[0]['DOWN'], 274),
- convert_event(controller_mapping[0]['LEFT'], 276),
- convert_event(controller_mapping[0]['RIGHT'], 275),   
+ convert_event(controller_mapping[0]['DOWN'], 274, "DOWN"),
+ convert_event(controller_mapping[0]['LEFT'], 276, "LEFT"),
+ convert_event(controller_mapping[0]['RIGHT'], 275, "RIGHT"),   
  convert_event(controller_mapping[0]['SELECT'], 9),
  convert_event(controller_mapping[0]['START'], 13), 
- convert_event(controller_mapping[0]['UP'], 273))
+ convert_event(controller_mapping[0]['UP'], 273, "UP"))
  
 player2 = ((convert_event(controller_mapping[1]['A'], 100), 
  convert_event(controller_mapping[1]['B'], 99),
- convert_event(controller_mapping[1]['DOWN'], 274),
- convert_event(controller_mapping[1]['LEFT'], 276),
- convert_event(controller_mapping[1]['RIGHT'], 275),   
+ convert_event(controller_mapping[1]['DOWN'], 274, "DOWN"),
+ convert_event(controller_mapping[1]['LEFT'], 276, "LEFT"),
+ convert_event(controller_mapping[1]['RIGHT'], 275, "RIGHT"),   
  convert_event(controller_mapping[1]['SELECT'], 9),
  convert_event(controller_mapping[1]['START'], 13), 
- convert_event(controller_mapping[1]['UP'], 273)) 
+ convert_event(controller_mapping[1]['UP'], 273, "UP")) 
  if num_players > 1 else ((279,) * 8))
  
- 
+controller_type = (convert_event(controller_mapping[0]['UP'], "Keyboard", "CONTROLLER_TYPE"), convert_event(controller_mapping[0]['UP'], "None", "CONTROLLER_TYPE"))
+
 try:
     output_file_data = """
 # Auto-generated
@@ -339,8 +348,8 @@ SDL.Input.2 = Gamepad.2
 SDL.Input.3 = Gamepad.3
 SDL.Input.FTrainer.DeviceType = Keyboard
 SDL.Input.FamilyKeyBoard.DeviceType = Keyboard
-SDL.Input.GamePad.0DeviceType = Keyboard
-SDL.Input.GamePad.1DeviceType = None
+SDL.Input.GamePad.0DeviceType = %s
+SDL.Input.GamePad.1DeviceType = %s
 SDL.Input.GamePad.2DeviceType = None
 SDL.Input.GamePad.3DeviceType = None
 SDL.Input.HyperShot.DeviceType = Keyboard
@@ -361,7 +370,7 @@ SDL.Sound.RecordFile =
 SDL.Zapper.0.DeviceType = Mouse
 
 
-    """ % (player1 + player2)
+    """ % (player1 + player2 + controller_type)
  
 
 except KeyError, e:
