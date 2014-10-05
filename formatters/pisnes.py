@@ -78,7 +78,7 @@ joypad2 = ((convert_event(controller_mapping[1]['A'], 0, True),
      convert_event(controller_mapping[1]['UP'], 1, True)) 
 	 if num_players > 1 else (0,1,2,3,4,6,9,8,0,1))
 	 
-joypad_options = (convert_event(controller_mapping[1]['*EXIT_PROGRAM'], 0, True),)
+joypad_options = (convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 0, True),)
 
 try:
     output_file_data = """
