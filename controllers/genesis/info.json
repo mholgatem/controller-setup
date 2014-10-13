@@ -1,1 +1,1 @@
-{"image": "genesis_controller.png", "name": "genesis", "controls": ["A", "B", "C", "X", "Y", "Z", "LEFT", "UP", "RIGHT", "DOWN", "START", "MODE"], "formatters": ["dgen.py"], "output_directory": ["/home/pi/.dgen/dgenrc"]}
+{"image": "genesis_controller.png", "name": "genesis", "max_players": 2, "controls": ["A", "B", "C", "X", "Y", "Z", "LEFT", "UP", "RIGHT", "DOWN", "START", "MODE", "*EXIT_PROGRAM", "*RESET"], "formatters": ["dgen.py"], "output_directory": ["/home/pi/.dgen/dgenrc"]}

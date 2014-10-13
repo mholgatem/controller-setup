@@ -1,1 +1,1 @@
-{"image": "neogeo_controller.png", "name": "neogeo", "controls": ["A", "B", "C", "D", "LEFT", "UP", "RIGHT", "DOWN", "START", "COIN"], "formatters": ["neogeo.py"], "output_directory": ["/home/pi/pimame/neogeo.cfg"]}
+{"image": "neogeo_controller.png", "name": "neogeo", "max_players": 2, "controls": ["A", "B", "C", "D", "LEFT", "UP", "RIGHT", "DOWN", "START", "COIN", "*EXIT_PROGRAM"], "formatters": ["neogeo.py"], "output_directory": ["/home/pi/pimame/neogeo.cfg"]}
