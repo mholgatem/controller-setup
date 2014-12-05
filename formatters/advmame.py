@@ -16,10 +16,9 @@ num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
-
-	if event["type"] in [2,3]:
+    if event["type"] in [2,3]:
         return "or keyboard[%s,%s]" % (event['mod'], event["keyname"].replace('left ', 'l').replace('right ', 'r'))
-	elif event["type"] in [10,11]:
+    elif event["type"] in [10,11]:
         return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
     elif event["type"] == 7:
         if event['value'] < 0:
@@ -27,10 +26,7 @@ def convert_event(event, default):
         else:
             event['value'] = 0
         return  "or joystick_digital[%d,0,%s,%s]" % (event['joy'], event["axis"], event["value"] )
-	
-	return ''
-
-		
+    return ''
 
 
 player1 = (convert_event(controller_mapping[0]['UP'], 0), 
@@ -402,7 +398,7 @@ input_map[p2_button8] keyboard[1,scan0]
 input_map[start2] keyboard[1,scan0] %s
 input_map[coin2] keyboard[1,scan0] %s
     """ % ( player1 +  player2 )
-	 
+
 except KeyError, e:
     print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
     sys.exit()
