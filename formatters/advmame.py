@@ -5,7 +5,7 @@ import os
 
 #  TODO Abstract this into a base formatter class
 if len(sys.argv) < 3:
-    print "Formatter requires 2 arguments, input file and output file name"
+	print "Formatter requires 2 arguments, input file and output file name"
 
 input_file_name = sys.argv[1]
 output_file_name = sys.argv[2]
@@ -16,50 +16,54 @@ num_players = len(controller_mapping)
 
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
-    if event["type"] in [2,3]:
-        return "or keyboard[%s,%s]" % (event['mod'], event["keyname"].replace('left ', 'l').replace('right ', 'r'))
-    elif event["type"] in [10,11]:
-        return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
-    elif event["type"] == 7:
-        if event['value'] < 0:
-            event['value'] = 1
-        else:
-            event['value'] = 0
-        return  "or joystick_digital[%d,0,%s,%s]" % (event['joy'], event["axis"], event["value"] )
-    return ''
+
+	if event["type"] in [2,3]:
+		return "or keyboard[%s,%s]" % (event['mod'], event["keyname"].replace('left ', 'l').replace('right ', 'r'))
+	elif event["type"] in [10,11]:
+		return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
+	elif event["type"] == 7:
+		if event['value'] < 0:
+			event['value'] = 1
+		else:
+			event['value'] = 0
+		return  "or joystick_digital[%d,0,%s,%s]" % (event['joy'], event["axis"], event["value"] )
+
+	return ''
+
+		
 
 
 player1 = (convert_event(controller_mapping[0]['UP'], 0), 
-     convert_event(controller_mapping[0]['DOWN'], 0),
-     convert_event(controller_mapping[0]['RIGHT'], 0),
-     convert_event(controller_mapping[0]['LEFT'], 0),
-     convert_event(controller_mapping[0]['Top 1'], 3), 
-     convert_event(controller_mapping[0]['Top 2'], 2),
-     convert_event(controller_mapping[0]['Top 3'], 1), 
-     convert_event(controller_mapping[0]['Bottom 1'], 0), 
-     convert_event(controller_mapping[0]['Bottom 2'], 4),
-     convert_event(controller_mapping[0]['Bottom 3'], 6), 
-     convert_event(controller_mapping[0]['START'], 9), 
-     convert_event(controller_mapping[0]['COIN'], 8),
-     convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 5))
+	 convert_event(controller_mapping[0]['DOWN'], 0),
+	 convert_event(controller_mapping[0]['RIGHT'], 0),
+	 convert_event(controller_mapping[0]['LEFT'], 0),
+	 convert_event(controller_mapping[0]['Top 1'], 3), 
+	 convert_event(controller_mapping[0]['Top 2'], 2),
+	 convert_event(controller_mapping[0]['Top 3'], 1), 
+	 convert_event(controller_mapping[0]['Bottom 1'], 0), 
+	 convert_event(controller_mapping[0]['Bottom 2'], 4),
+	 convert_event(controller_mapping[0]['Bottom 3'], 6), 
+	 convert_event(controller_mapping[0]['START'], 9), 
+	 convert_event(controller_mapping[0]['COIN'], 8),
+	 convert_event(controller_mapping[0]['*EXIT_PROGRAM'], 5))
 
 player2 = ((convert_event(controller_mapping[1]['UP'], 0), 
-     convert_event(controller_mapping[1]['DOWN'], 0),
-     convert_event(controller_mapping[1]['RIGHT'], 0),
-     convert_event(controller_mapping[1]['LEFT'], 0),
-     convert_event(controller_mapping[1]['Top 1'], 3), 
-     convert_event(controller_mapping[1]['Top 2'], 2),
-     convert_event(controller_mapping[1]['Top 3'], 1), 
-     convert_event(controller_mapping[1]['Bottom 1'], 0), 
-     convert_event(controller_mapping[1]['Bottom 2'], 4),
-     convert_event(controller_mapping[1]['Bottom 3'], 6), 
-     convert_event(controller_mapping[1]['START'], 9), 
-     convert_event(controller_mapping[1]['COIN'], 8)) 
+	 convert_event(controller_mapping[1]['DOWN'], 0),
+	 convert_event(controller_mapping[1]['RIGHT'], 0),
+	 convert_event(controller_mapping[1]['LEFT'], 0),
+	 convert_event(controller_mapping[1]['Top 1'], 3), 
+	 convert_event(controller_mapping[1]['Top 2'], 2),
+	 convert_event(controller_mapping[1]['Top 3'], 1), 
+	 convert_event(controller_mapping[1]['Bottom 1'], 0), 
+	 convert_event(controller_mapping[1]['Bottom 2'], 4),
+	 convert_event(controller_mapping[1]['Bottom 3'], 6), 
+	 convert_event(controller_mapping[1]['START'], 9), 
+	 convert_event(controller_mapping[1]['COIN'], 8)) 
 	 if num_players > 1 else (('',) * 12))
 	 
 	 
 try:
-    output_file_data = """
+	output_file_data = """
 device_video_clock 5 - 50 / 15.62 / 50 ; 5 - 50 / 15.73 / 60
 debug_crash no
 debug_rawsound no
@@ -397,18 +401,18 @@ input_map[p2_button7] keyboard[1,scan0]
 input_map[p2_button8] keyboard[1,scan0]
 input_map[start2] keyboard[1,scan0] %s
 input_map[coin2] keyboard[1,scan0] %s
-    """ % ( player1 +  player2 )
-
+	""" % ( player1 +  player2 )
+	 
 except KeyError, e:
-    print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
-    sys.exit()
+	print "Your input controller configuration didn't support a required button. Error: %s button required." % str(e)
+	sys.exit()
 
 directory = os.path.dirname(output_file_name)
 if not os.path.exists(directory):
-    os.makedirs(directory)
+	os.makedirs(directory)
 
 
 with open(output_file_name, "w") as output_file:
-    output_file.write(output_file_data)
+	output_file.write(output_file_data)
 
 print output_file_name + " created."
