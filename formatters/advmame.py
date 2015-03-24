@@ -14,11 +14,17 @@ input_file_data = open(input_file_name).read()
 controller_mapping = json.loads(input_file_data)
 num_players = len(controller_mapping)
 
+def get_keyname(keyname):
+	keyname = (keyname.replace('left ', 'l')
+						.replace('right ', 'r')
+						.replace('return', 'enter')
+						.replace('escape','esc'))
+	return keyname
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
 
 	if event["type"] in [2,3]:
-		return "or keyboard[%s,%s]" % (event['mod'], event["keyname"].replace('left ', 'l').replace('right ', 'r'))
+		return "or keyboard[%s,%s]" % (event['mod'], get_keyname(event["keyname"]))
 	elif event["type"] in [10,11]:
 		return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
 	elif event["type"] == 7:
