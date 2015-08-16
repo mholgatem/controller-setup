@@ -15,16 +15,31 @@ controller_mapping = json.loads(input_file_data)
 num_players = len(controller_mapping)
 
 def get_keyname(keyname):
-	keyname = (keyname.replace('left ', 'l')
+	keyname = (keyname
+						.replace('left bracket', 'openbrace')
+						.replace('right bracket', 'closebrace')
+						.replace('less-than sign', 'less')
+						.replace('greater-than sign', 'greater')
+						.replace('forward slash', 'slash')
+						.replace('page up', 'pgup')
+						.replace('page down', 'pgdown')
+						.replace('left ', 'l')
 						.replace('right ', 'r')
 						.replace('return', 'enter')
-						.replace('escape','esc'))
+						.replace('escape','esc')
+						.replace('grave', 'backquote')
+						.replace(' sign', '')
+						.replace('delete', 'del')
+						)
+	
+	if 'keypad' in keyname:
+		keyname = keyname[7:] + '_pad'
 	return keyname
 #  Converts our mapping into a emulator specific value
 def convert_event(event, default):
 
 	if event["type"] in [2,3]:
-		return "or keyboard[%s,%s]" % (event['mod'], get_keyname(event["keyname"]))
+		return "or keyboard[%s,%s]" % (0, get_keyname(event["keyname"] ))
 	elif event["type"] in [10,11]:
 		return "or joystick_button[%d,%s]" % (event['joy'], event["button"])
 	elif event["type"] == 7:
@@ -370,14 +385,14 @@ ui_font auto
 ui_fontsize auto
 ui_helpimage auto
 ui_translucency 0.8
-input_map[p1_doubleleft_up] keyboard[1,scan0] or keyboard[0,8_pad]
-input_map[p1_doubleleft_down] keyboard[1,scan0] or keyboard[0,2_pad]
-input_map[p1_doubleleft_right] keyboard[1,scan0] or keyboard[0,6_pad]
-input_map[p1_doubleleft_left] keyboard[1,scan0] or keyboard[0,4_pad]
-input_map[p1_doubleright_up] keyboard[1,scan0] or keyboard[0,r]
-input_map[p1_doubleright_down] keyboard[1,scan0] or keyboard[0,f]
-input_map[p1_doubleright_right] keyboard[1,scan0] or keyboard[0,g]
-input_map[p1_doubleright_left] keyboard[1,scan0] or keyboard[0,d]
+input_map[p1_doubleleft_up] auto
+input_map[p1_doubleleft_down] auto
+input_map[p1_doubleleft_right] auto
+input_map[p1_doubleleft_left] auto
+input_map[p1_doubleright_up] auto
+input_map[p1_doubleright_down] auto
+input_map[p1_doubleright_right] auto
+input_map[p1_doubleright_left] auto
 input_map[p1_up] keyboard[1,scan0] %s
 input_map[p1_down] keyboard[1,scan0] %s
 input_map[p1_right] keyboard[1,scan0] %s
@@ -388,11 +403,12 @@ input_map[p1_button3] keyboard[1,scan0] %s
 input_map[p1_button4] keyboard[1,scan0] %s
 input_map[p1_button5] keyboard[1,scan0] %s
 input_map[p1_button6] keyboard[1,scan0] %s
-input_map[p1_button7] keyboard[1,scan0]
-input_map[p1_button8] keyboard[1,scan0]
+input_map[p1_button7] 
+input_map[p1_button8] 
 input_map[start1] keyboard[1,scan0] %s
 input_map[coin1] keyboard[1,scan0] %s
-input_map[ui_cancel] keyboard[1,scan0] keyboard[1,scan0] or keyboard[0,esc] %s
+input_map[ui_cancel] keyboard[0,esc] %s
+input_map[ui_configure] keyboard[0, tab] or keyboard[1, tab]
 input_map[p2_up] keyboard[1,scan0] %s
 input_map[p2_down] keyboard[1,scan0] %s
 input_map[p2_right] keyboard[1,scan0] %s
@@ -403,8 +419,8 @@ input_map[p2_button3] keyboard[1,scan0] %s
 input_map[p2_button4] keyboard[1,scan0] %s
 input_map[p2_button5] keyboard[1,scan0] %s
 input_map[p2_button6] keyboard[1,scan0] %s
-input_map[p2_button7] keyboard[1,scan0]
-input_map[p2_button8] keyboard[1,scan0]
+input_map[p2_button7] 
+input_map[p2_button8] 
 input_map[start2] keyboard[1,scan0] %s
 input_map[coin2] keyboard[1,scan0] %s
 	""" % ( player1 +  player2 )
